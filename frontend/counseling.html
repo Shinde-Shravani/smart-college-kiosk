@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Counseling Support</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 flex h-screen overflow-hidden">
+
+  <!-- Left Sidebar -->
+  <aside class="w-64 bg-blue-900 text-white flex flex-col justify-between p-4 shadow-xl">
+    <div>
+      <div class="flex items-center space-x-3 mb-8 px-2">
+        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center font-bold text-lg text-blue-900">S</div>
+        <div>
+          <h1 class="font-bold text-sm tracking-wide">SVPM COE</h1>
+          <p class="text-xs text-blue-200">MALEGAON</p>
+        </div>
+      </div>
+      <nav class="space-y-1">
+        <a href="index.html" class="flex items-center space-x-3 text-blue-100 hover:bg-blue-800 px-4 py-3 rounded-xl transition"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="map.html" class="flex items-center space-x-3 text-blue-100 hover:bg-blue-800 px-4 py-3 rounded-xl transition"><i class="fa-solid fa-map-location-dot"></i><span>Campus Map</span></a>
+        <a href="departments.html" class="flex items-center space-x-3 text-blue-100 hover:bg-blue-800 px-4 py-3 rounded-xl transition"><i class="fa-solid fa-building"></i><span>Departments</span></a>
+        <a href="counseling.html" class="flex items-center space-x-3 bg-blue-600 px-4 py-3 rounded-xl font-medium text-white transition"><i class="fa-solid fa-user-graduate"></i><span>Student Counseling</span></a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 overflow-y-auto p-8 relative">
+    
+    <!-- Hero Header -->
+    <section class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-8 text-white mb-8 shadow-md">
+      <div class="max-w-xl">
+        <span class="bg-blue-500/30 text-blue-100 text-xs font-semibold px-3 py-1 rounded-full uppercase">Student Support Portal</span>
+        <h2 class="text-3xl font-extrabold mt-3 mb-2">Student Counseling Support</h2>
+        <p class="text-sm text-blue-100 mb-6">Get confidential guidance about courses, career opportunities, academic performance, or personal well-being from expert campus counselors.</p>
+        <button onclick="openModal()" class="bg-white text-blue-600 font-bold px-6 py-3 rounded-xl shadow hover:bg-blue-50 transition">
+          <i class="fa-solid fa-calendar-check mr-2"></i>Talk to Counselor
+        </button>
+      </div>
+    </section>
+
+    <!-- Support Categories -->
+    <h3 class="text-xl font-bold text-slate-900 mb-4">How can we help you?</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      
+      <div class="bg-amber-50/50 border border-amber-100 p-6 rounded-2xl flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-lg mb-3">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+          <h4 class="font-bold text-slate-900">Academic Guidance</h4>
+          <p class="text-xs text-slate-500 mt-1">Course structures, exam doubts, attendance support, and study planning.</p>
+        </div>
+        <button onclick="openModal('Academic')" class="mt-6 text-xs font-bold text-amber-600 text-left hover:underline">Book Session →</button>
+      </div>
+
+      <div class="bg-rose-50/50 border border-rose-100 p-6 rounded-2xl flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 bg-rose-100 text-rose-600 rounded-xl flex items-center justify-center text-lg mb-3">
+            <i class="fa-solid fa-briefcase"></i>
+          </div>
+          <h4 class="font-bold text-slate-900">Career Counseling</h4>
+          <p class="text-xs text-slate-500 mt-1">Internship advice, campus placements, higher education, and resume building.</p>
+        </div>
+        <button onclick="openModal('Career')" class="mt-6 text-xs font-bold text-rose-600 text-left hover:underline">Book Session →</button>
+      </div>
+
+      <div class="bg-teal-50/50 border border-teal-100 p-6 rounded-2xl flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center text-lg mb-3">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <h4 class="font-bold text-slate-900">Personal Support</h4>
+          <p class="text-xs text-slate-500 mt-1">Stress management, mental well-being, campus adaptation, and personal support.</p>
+        </div>
+        <button onclick="openModal('Personal Well-being')" class="mt-6 text-xs font-bold text-teal-600 text-left hover:underline">Book Session →</button>
+      </div>
+
+    </div>
+
+    <!-- Counseling Session Booking Modal -->
+    <div id="bookingModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center z-50">
+      <div class="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl relative">
+        <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <h3 class="text-lg font-bold text-slate-900 mb-1">Book Counseling Session</h3>
+        <p class="text-xs text-slate-500 mb-4">Select your topic and preferred slot.</p>
+
+        <form onsubmit="handleBooking(event)" class="space-y-4">
+          <div>
+            <label class="text-xs font-semibold text-slate-500">Category</label>
+            <select id="categorySelect" class="w-full mt-1 border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-blue-600">
+              <option value="Academic">Academic Guidance</option>
+              <option value="Career">Career Counseling</option>
+              <option value="Personal Well-being">Personal Support</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-500">Preferred Date</label>
+            <input type="date" required class="w-full mt-1 border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-blue-600"/>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-500">Describe your concern (Optional)</label>
+            <textarea rows="3" placeholder="Briefly share your query..." class="w-full mt-1 border border-slate-300 rounded-xl p-2.5 text-sm outline-none focus:border-blue-600"></textarea>
+          </div>
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">Submit Request</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function openModal(category = 'Academic') {
+      document.getElementById('categorySelect').value = category;
+      document.getElementById('bookingModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('bookingModal').classList.add('hidden');
+    }
+
+    function handleBooking(e) {
+      e.preventDefault();
+      alert("Counseling session request submitted successfully! A counselor will reach out shortly.");
+      closeModal();
+    }
+  </script>
+</body>
+</html>

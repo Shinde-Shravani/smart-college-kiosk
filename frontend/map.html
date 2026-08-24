@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campus Navigator Map</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body class="bg-slate-100 flex h-screen overflow-hidden">
+
+  <!-- Map Sidebar -->
+  <div class="w-80 bg-white p-6 shadow-md z-10 flex flex-col justify-between">
+    <div>
+      <h3 class="text-xl font-bold mb-4 text-slate-800">Campus Navigator</h3>
+      
+      <div class="space-y-4 mb-6">
+        <div>
+          <label class="text-xs font-semibold text-slate-500 uppercase">From Location</label>
+          <select id="startPoint" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-sm">
+            <option value="gate">Main Gate (You are here)</option>
+            <option value="mech">Mechanical Dept</option>
+            <option value="comp">Computer Dept</option>
+            <option value="canteen">Canteen</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-slate-500 uppercase">To Destination</label>
+          <select id="endPoint" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-sm">
+            <option value="mech">Mechanical Dept</option>
+            <option value="comp">Computer Dept</option>
+            <option value="library">Library</option>
+            <option value="canteen">Canteen</option>
+          </select>
+        </div>
+        <button onclick="calculateRoute()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition">
+          Start Navigation
+        </button>
+      </div>
+
+      <div id="routeMetrics" class="hidden bg-blue-50 border border-blue-200 p-4 rounded-xl">
+        <p class="text-xs text-blue-600 font-semibold uppercase">Route Info</p>
+        <div class="flex justify-between items-center mt-1">
+          <span id="distVal" class="text-lg font-bold text-slate-800">120 m</span>
+          <span id="timeVal" class="text-sm font-medium text-slate-600">2 mins walk</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="index.html" class="text-center text-sm font-semibold text-blue-600 hover:underline">← Back to Dashboard</a>
+  </div>
+
+  <!-- Leaflet Canvas -->
+  <div id="campusMap" class="flex-1 h-full"></div>
+
+  <script>
+    const campusCenter = [18.1500, 74.5800]; 
+    const map = L.map('campusMap').setView(campusCenter, 18);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© SVPM COE Map'
+    }).addTo(map);
+
+    const poiLocations = {
+      gate: { name: "Main Gate", coords: [18.1500, 74.5800] },
+      mech: { name: "Mechanical Dept", coords: [18.1505, 74.5808] },
+      comp: { name: "Computer Dept", coords: [18.1510, 74.5812] },
+      library: { name: "Central Library", coords: [18.1512, 74.5798] },
+      canteen: { name: "Campus Canteen", coords: [18.1495, 74.5805] }
+    };
+
+    Object.keys(poiLocations).forEach(key => {
+      const item = poiLocations[key];
+      L.marker(item.coords).addTo(map).bindPopup(`<b>${item.name}</b>`);
+    });
+
+    let currentPath = null;
+
+    function calculateRoute() {
+      const startKey = document.getElementById('startPoint').value;
+      const endKey = document.getElementById('endPoint').value;
+
+      if (startKey === endKey) {
+        alert("Select two different locations.");
+        return;
+      }
+
+      if (currentPath) map.removeLayer(currentPath);
+
+      const startCoords = poiLocations[startKey].coords;
+      const endCoords = poiLocations[endKey].coords;
+
+      currentPath = L.polyline([startCoords, endCoords], {
+        color: '#2563eb',
+        weight: 5,
+        dashArray: '8, 8'
+      }).addTo(map);
+
+      map.fitBounds(currentPath.getBounds(), { padding: [50, 50] });
+
+      document.getElementById('routeMetrics').classList.remove('hidden');
+      document.getElementById('distVal').innerText = "120 m";
+      document.getElementById('timeVal').innerText = "2 mins walk";
+    }
+  </script>
+</body>
+</html>
